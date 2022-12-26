@@ -10,7 +10,7 @@ class Conways:
         self.nb_carres_y = math.floor(pygame.display.Info().current_h / self.square_size)
         self.square_color = (0, 0, 0)
 
-        self.map = [[0 for i in range(self.nb_carres_x)] for j in range(self.nb_carres_y)]
+        self.map = [[0 for i in range(self.nb_carres_y)] for j in range(self.nb_carres_x)]
 
     def print(self, window):
         for x in range(len(self.map)):
@@ -50,3 +50,24 @@ class Conways:
                     if nb_vivants == 3:
                         self.map[x][y] = 1
 
+    def God(self, pos, mod):
+        x = int(pos[0] / self.square_size)
+        y = int(pos[1] / self.square_size)
+
+        if mod == 1:
+            if self.map[x][y] == 0:
+                self.map[x][y] = 1
+                return mod
+        elif mod == 0:
+            if self.map[x][y] == 1:
+                self.map[x][y] = 0
+                return mod
+        else:
+            if self.map[x][y] == 0:
+                self.map[x][y] = 1
+                return 1
+            else:
+                self.map[x][y] = 0
+                return 0
+
+        return mod

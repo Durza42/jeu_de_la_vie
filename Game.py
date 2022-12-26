@@ -23,7 +23,8 @@ class Game:
 
         self.window = pygame.display.set_mode((self.width, self.height))
         self.bg_color = (255, 255, 255)
-        self.wait_time = 300
+        self.wait_time = 20
+        self.time_between_frames = params["attente"]
 
         self.conway = Conways.Conways(self.width, self.height, self.square_size)
 
@@ -39,6 +40,7 @@ class Game:
     def main_loop(self):
         play = True
         edit_mode = False
+        last_frame = 0
 
         while(play):
 
@@ -49,18 +51,28 @@ class Game:
                 if event.type == pygame.KEYDOWN:
                     if event.key == pygame.K_SPACE:
                         edit_mode = True
+                        mod = -1
                         print("entering edit mode. Press <escape> to quit.")
                     if event.key == pygame.K_ESCAPE:
                         edit_mode = False
                         print("quiting edit mode.")
+                if edit_mode:
+                    mouse_presses = pygame.mouse.get_pressed()
+                    if mouse_presses[0]:
+                        mouse_pos = pygame.mouse.get_pos()
+                        mod = self.conway.God(mouse_pos, mod) # invert cell state
+                    else:
+                        mod = -1
 
-            # reste des opérations
-            if edit_mode:
-                pass
-            else:
-                self.window.fill(self.bg_color)
-                self.conway.print(self.window)
-                pygame.display.update()
-                pygame.time.wait(self.wait_time)
+            # afficher la grille
+            self.window.fill(self.bg_color)
+            self.conway.print(self.window)
+            pygame.display.update()
+            pygame.time.wait(self.wait_time)
+
+            # faire évoluer le jeu
+            if not edit_mode\
+               and last_frame + self.time_between_frames < pygame.time.get_ticks():
                 self.conway.tour_de_jeu()
+                last_frame = pygame.time.get_ticks()
 

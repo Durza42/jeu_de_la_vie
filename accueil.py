@@ -12,6 +12,9 @@ def menu(params):
     def on_y_ok(button):
         params["nb_carres_y"] = button.get_value_as_int()
 
+    def on_attente_ok(button):
+        params["attente"] = button.get_value_as_int()
+
     def on_path_ok(button):
         print("TODO: path")
 
@@ -38,7 +41,7 @@ def menu(params):
             self.horizontal_box = Gtk.Box()
             self.legende = Gtk.Label(label=text)
 
-            adjustment = Gtk.Adjustment(upper=100, step_increment=1, page_increment=10)
+            adjustment = Gtk.Adjustment(upper=5000, step_increment=1, page_increment=10)
             self.getnumber = Gtk.SpinButton()
             self.getnumber.set_adjustment(adjustment)
             self.getnumber.connect("value-changed", callback)
@@ -67,10 +70,13 @@ def menu(params):
 
             self.vertical_box.pack_start(self.titre, False, False, SPACE_BETWEEN_WIDGETS)
 
-            demande_taille_x = LabelPlusNumberEntry(self.vertical_box, "entrez la taille x :", 50, on_x_ok)
-            demande_taille_y = LabelPlusNumberEntry(self.vertical_box, "entrez la taille y :", 28, on_y_ok)
+            demande_taille_x = LabelPlusNumberEntry(self.vertical_box, "entrez la taille x :", 30, on_x_ok)
+            demande_taille_y = LabelPlusNumberEntry(self.vertical_box, "entrez la taille y :", 20, on_y_ok)
+            demande_attente  = LabelPlusNumberEntry(self.vertical_box, "l'attente entre deux frames (en ms) :", 300, on_attente_ok)
+
 ## pour l'instant
 #            demande_chemin_sauvegarde = LabelPlusTextEntry(self.vertical_box, "ou entrez le chemin du fichier de sauvegarde :", on_path_ok)
+##
 
             self.launch = Gtk.Button.new_with_label(label="lancer le jeu de la vie selon ces paramètres")
             self.launch.connect("clicked", launch_app)
